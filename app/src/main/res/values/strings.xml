@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Seism</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="record">Record</string>
+    <string name="history">History</string>
+    <string name="analyze">Analyze</string>
+    <string name="settings">Settings</string>
+    <string name="openDrawer">Open</string>
+    <string name="closeDrawer">Close</string>
+    <string name="drawer_header_name">Joe Barrett</string>
+    <string name="drawer_header_email">joebarrett401@gmail.com</string>
+</resources>
