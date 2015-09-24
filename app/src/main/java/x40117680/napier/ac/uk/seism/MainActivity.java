@@ -1,6 +1,8 @@
 package x40117680.napier.ac.uk.seism;
 
-import android.os.Build;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -24,6 +26,8 @@ public class MainActivity extends AppCompatActivity {
     private int mCurrentSelectedPosition;
     private ActionBarDrawerToggle mDrawerToggle;
 
+    final String[] fragments ={"R.layout.record_fragment","R.layout.analyze_fragment"};
+
     private static final String STATE_SELECTED_POSITION = "selected_navigation_drawer_position";
 
 
@@ -31,31 +35,51 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        if (findViewById(R.id.content_frame)!=null){
+            if(savedInstanceState != null){
+                return;
+            }
+            FragmentRecord recordFragment = new FragmentRecord();
+            recordFragment.setArguments(getIntent().getExtras());
+            getSupportFragmentManager().beginTransaction().add(R.id.content_frame,recordFragment).commit();
+        }
         setUpToolbar();
         setUpNavDrawer();
 
         mNavigationView = (NavigationView) findViewById(R.id.nav_view);
-        mContentFrame = (FrameLayout) findViewById(R.id.nav_content_frame);
+        mContentFrame = (FrameLayout) findViewById(R.id.content_frame);
         mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
+                Fragment newFragment = new Fragment();
+                //Bundle args = new Bundle();
+                //args.putInt(Fragment.ARG_POSITION, position);
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                 menuItem.setChecked(true);
                 switch (menuItem.getItemId()) {
                     case R.id.nav_item_record:
-                        Snackbar.make(mContentFrame, R.string.record, Snackbar.LENGTH_SHORT).show();
+                        //Snackbar.make(mContentFrame, R.string.record, Snackbar.LENGTH_SHORT).show();
                         mCurrentSelectedPosition = 0;
+                        newFragment = new FragmentRecord();
+                        transaction.replace(R.id.content_frame, newFragment).commit();
+                        mDrawerLayout.closeDrawers();
                         return true;
                     case R.id.nav_item_history:
-                        Snackbar.make(mContentFrame, R.string.history, Snackbar.LENGTH_SHORT).show();
+                        //Snackbar.make(mContentFrame, R.string.history, Snackbar.LENGTH_SHORT).show();
                         mCurrentSelectedPosition = 1;
+                        mDrawerLayout.closeDrawers();
                         return true;
                     case R.id.nav_item_analyze:
-                        Snackbar.make(mContentFrame, R.string.analyze, Snackbar.LENGTH_SHORT).show();
+                        //Snackbar.make(mContentFrame, R.string.analyze, Snackbar.LENGTH_SHORT).show();
                         mCurrentSelectedPosition = 2;
+                        newFragment = new FragmentAnalyze();
+                        transaction.replace(R.id.content_frame, newFragment).commit();
+                        mDrawerLayout.closeDrawers();
                         return true;
                     case R.id.nav_item_settings:
-                        Snackbar.make(mContentFrame, R.string.settings, Snackbar.LENGTH_SHORT).show();
+                        //Snackbar.make(mContentFrame, R.string.settings, Snackbar.LENGTH_SHORT).show();
                         mCurrentSelectedPosition = 3;
+                        mDrawerLayout.closeDrawers();
                         return true;
                     default:
                         return true;
